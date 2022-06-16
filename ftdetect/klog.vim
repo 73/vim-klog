@@ -1,1 +1,1 @@
-autocmd BufNewFile,BufRead *.kolg,*.klg set filetype=klog
+autocmd BufNewFile,BufRead *.klog,*.klg set filetype=klog
