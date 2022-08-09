@@ -36,3 +36,4 @@ highlight default link klogTimespan Keyword
 " String
 
 let b:current_syntax = 'klog'
+syntax sync minlines=50
