@@ -4,7 +4,9 @@ if exists("b:current_syntax")
 endif
 
 " everywhere
-syntax match klogTag "#\S\+" contained
+syntax match klogTag "#[a-zA-Z0-9_-]\+" contained nextgroup=klogTagEquals
+syntax match klogTagEquals "=" contained nextgroup=klogTagValue
+syntax match klogTagValue "\(\"[^\"]*\"\|'[^']*'\|[a-zA-Z0-9_-]\+\)" contained
 
 " Record Header
 syntax region klogHeader start="^\d\{4}-\d\{2}-\d\{2}" end="$" contains=klogRecord,klogShould  nextgroup=klogRecordSummary,klogEntry skipnl
@@ -25,6 +27,7 @@ syntax match klogTimespan "\(^\t\|\ \{2,4}\)\@<=<\=\d\{1,2}:\d\{2}\(\(am\)\|\(pm
 
 " Highlight
 highlight default link klogTag Identifier
+highlight default link klogTagValue String
 highlight default link klogRecord Underlined
 highlight default link klogShould Statement
 highlight default link klogRecordSummary Comment
