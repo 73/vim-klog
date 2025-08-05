@@ -20,8 +20,8 @@ syntax region klogRecordSummary start="^\S" end="$" contained contains=klogTag n
 syntax match klogEntrySummary "^\t\{2}\|\ \{4,8}.*" contained keepend contains=klogTag nextgroup=klogEntrySummary,klogEntry skipnl
 syntax region klogEntry start="^\t\|\ \{2,4}-\(\d\+h\d\+m\|\d\+h\|\d\+m\)" end="$" contained keepend contains=klogTag,klogNegDuration nextgroup=klogEntrySummary,klogEntry skipnl
 syntax match klogNegDuration "\(^\t\|\ \{2,4}\)\@<=-\(\d\+h\d\+m\|\d\+h\|\d\+m\)" contained
-syntax region klogEntry start="^\t\|\ \{2,4}\(\d\+h\d\+m\|\d\+h\|\d\+m\)" end="$" contained keepend contains=klogTag,klogPosDuration nextgroup=klogEntrySummary,klogEntry skipnl
-syntax match klogPosDuration "\(^\t\|\ \{2,4}\)\@<=\(\d\+h\d\+m\|\d\+h\|\d\+m\)" contained
+syntax region klogEntry start="^\t\|\ \{2,4}+\?\(\d\+h\d\+m\|\d\+h\|\d\+m\)" end="$" contained keepend contains=klogTag,klogPosDuration nextgroup=klogEntrySummary,klogEntry skipnl
+syntax match klogPosDuration "\(^\t\|\ \{2,4}\)\@<=+\?\(\d\+h\d\+m\|\d\+h\|\d\+m\)" contained
 syntax region klogEntry start="^\t\|\ \{2,4}<\=\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\= - \(?\+\|\(\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\=\)\)" end="$" contained keepend contains=klogTag,klogTimespan nextgroup=klogEntrySummary,klogEntry skipnl
 syntax match klogTimespan "\(^\t\|\ \{2,4}\)\@<=<\=\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\= - \(?\+\|\(\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\=\)\)" contained
 
