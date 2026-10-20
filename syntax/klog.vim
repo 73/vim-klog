@@ -4,25 +4,25 @@ if exists("b:current_syntax")
 endif
 
 " everywhere
-syntax match klogTag "#[a-zA-Z0-9_-]\+" contained nextgroup=klogTagEquals
+syntax match klogTag "#\%([[:alnum:]_-]\|\k\&[^\x00-\x7f]\)\+" contained nextgroup=klogTagEquals
 syntax match klogTagEquals "=" contained nextgroup=klogTagValue
-syntax match klogTagValue "\(\"[^\"]*\"\|'[^']*'\|[a-zA-Z0-9_-]\+\)" contained
+syntax match klogTagValue "\(\"[^\"]*\"\|'[^']*'\|\%([[:alnum:]_-]\|\k\&[^\x00-\x7f]\)\+\)" contained
 
 " Record Header
 syntax region klogHeader start="^\d\{4}-\d\{2}-\d\{2}" end="$" contains=klogRecord,klogShould  nextgroup=klogRecordSummary,klogEntry skipnl
 syntax region klogHeader start="^\d\{4}\/\d\{2}\/\d\{2}" end="$" contains=klogRecord,klogShould  nextgroup=klogRecordSummary,klogEntry skipnl
 syntax match klogRecord "^\d\{4}-\d\{2}-\d\{2}\ze" contained nextgroup=klogShould skipwhite
 syntax match klogRecord "^\d\{4}\/\d\{2}\/\d\{2}\ze" contained nextgroup=klogShould skipwhite
-syntax match klogShould " (-*\(\d\+h\d\+m\|\d\+h\|\d\+m\)!)" contained
+syntax match klogShould " \+([-+]\=\(\d\+h\d\+m\|\d\+h\|\d\+m\)!)" contained
 syntax region klogRecordSummary start="^\S" end="$" contained contains=klogTag nextgroup=klogEntry,klogRecordSummary skipnl
 
 " Entries
-syntax match klogEntrySummary "^\t\{2}\|\ \{4,8}.*" contained keepend contains=klogTag nextgroup=klogEntrySummary,klogEntry skipnl
-syntax region klogEntry start="^\t\|\ \{2,4}-\(\d\+h\d\+m\|\d\+h\|\d\+m\)" end="$" contained keepend contains=klogTag,klogNegDuration nextgroup=klogEntrySummary,klogEntry skipnl
+syntax match klogEntrySummary "^\%(\t\{2}\|\ \{4,8}\).*" contained keepend contains=klogTag nextgroup=klogEntrySummary,klogEntry skipnl
+syntax region klogEntry start="^\%(\t\|\ \{2,4}\)-\(\d\+h\d\+m\|\d\+h\|\d\+m\)" end="$" contained keepend contains=klogTag,klogNegDuration nextgroup=klogEntrySummary,klogEntry skipnl
 syntax match klogNegDuration "\(^\t\|\ \{2,4}\)\@<=-\(\d\+h\d\+m\|\d\+h\|\d\+m\)" contained
-syntax region klogEntry start="^\t\|\ \{2,4}+\?\(\d\+h\d\+m\|\d\+h\|\d\+m\)" end="$" contained keepend contains=klogTag,klogPosDuration nextgroup=klogEntrySummary,klogEntry skipnl
+syntax region klogEntry start="^\%(\t\|\ \{2,4}\)+\?\(\d\+h\d\+m\|\d\+h\|\d\+m\)" end="$" contained keepend contains=klogTag,klogPosDuration nextgroup=klogEntrySummary,klogEntry skipnl
 syntax match klogPosDuration "\(^\t\|\ \{2,4}\)\@<=+\?\(\d\+h\d\+m\|\d\+h\|\d\+m\)" contained
-syntax region klogEntry start="^\t\|\ \{2,4}<\=\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\=\s*-\s*\(?\+\|\(\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\=\)\)" end="$" contained keepend contains=klogTag,klogTimespan nextgroup=klogEntrySummary,klogEntry skipnl
+syntax region klogEntry start="^\%(\t\|\ \{2,4}\)<\=\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\=\s*-\s*\(?\+\|\(\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\=\)\)" end="$" contained keepend contains=klogTag,klogTimespan nextgroup=klogEntrySummary,klogEntry skipnl
 syntax match klogTimespan "\(^\t\|\ \{2,4}\)\@<=<\=\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\=\s*-\s*\(?\+\|\(\d\{1,2}:\d\{2}\(\(am\)\|\(pm\)\)\=>\=\)\)" contained
 
 
